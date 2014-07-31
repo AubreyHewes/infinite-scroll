@@ -71,7 +71,9 @@
         pixelsFromNavToBottom: undefined,
         path: undefined, // Either parts of a URL as an array (e.g. ["/page/", "/"] or a function that takes in the page number and returns a URL
         prefill: false, // When the document is smaller than the window, load data until the document is larger or links are exhausted
-        maxPage: undefined // to manually control maximum page (when maxPage is undefined, maximum page limitation is not work)
+        maxPage: undefined, // to manually control maximum page (when maxPage is undefined, maximum page limitation is not work)
+        requestType: 'GET', // http type when using dataType "json"
+        postData: undefined // optional postData when using requestType "POST"
     };
 
     $.infinitescroll.prototype = {
@@ -592,7 +594,8 @@
                     instance._debug('Using ' + (method.toUpperCase()) + ' via $.ajax() method');
                     $.ajax({
                         dataType: 'json',
-                        type: 'GET',
+                        type: opts.requestType,
+	                    data: opts.postData,
                         url: desturl,
                         success: function (data, textStatus, jqXHR) {
                             condition = (typeof (jqXHR.isResolved) !== 'undefined') ? (jqXHR.isResolved()) : (textStatus === "success" || textStatus === "notmodified");
